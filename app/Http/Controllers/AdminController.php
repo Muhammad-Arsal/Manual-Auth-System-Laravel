@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Hash; 
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -26,6 +27,7 @@ class AdminController extends Controller
         $user->password = Hash::make($validatedData['password']);
 
         $user->save();
+        $user->sendEmailVerificationNotification();
 
         return view('login');
     }
@@ -38,6 +40,7 @@ class AdminController extends Controller
         $user = Admin::where('email', $credentials['email'])->first();
 
         if ($user && Hash::check($credentials['password'], $user->password)) {
+            Auth::guard('admin')->login($user);
             return redirect("dashboard");
         } else {
             return redirect()->back();

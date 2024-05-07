@@ -15,10 +15,11 @@ class CheckAuthentication
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->guard('admin')->check()) {
+        if(auth()->guard('admin')->check()){
             return $next($request);
-        } else {
-            return redirect('welcome');
+        }else{
+            return redirect('login');
         }
+        
     }
 }
