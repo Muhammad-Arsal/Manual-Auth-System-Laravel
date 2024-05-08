@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Notifications\ResetPasswordNotification;
 
 class Admin extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
-    
+    use HasFactory;
+
     protected $table = "admin";
 
     protected $guard = 'admin';
@@ -19,6 +21,11 @@ class Admin extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'name', 'email', 'password',
     ];
-    
-    use HasFactory;
+
+    public function sendPasswordResetNotification($token)
+    {
+        $url = 'https://laravelauth.test/reset-password?token=' . $token;
+
+        $this->notify(new ResetPasswordNotification($url));
+    }
 }

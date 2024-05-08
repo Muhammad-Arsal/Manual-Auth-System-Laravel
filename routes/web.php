@@ -5,6 +5,9 @@ use App\Http\Controllers\HomeController;
 use App\Models\EmailVerification;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmailVerficationController;
+use App\Http\Controllers\PasswordResetController;
+use Illuminate\Http\Request;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,6 +25,8 @@ Route::get('/register', [AdminController::class, 'index']);
 Route::post('/registerForm', [AdminController::class, 'register'])->name('admin.register');
 Route::post('/loginForm', [AdminController::class, 'login'])->name('admin.login');
 
+
+//Email Verification Routes
 Route::group(['middleware' => ['verified', 'adminAuthentication']], function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard']);
 });
@@ -31,6 +36,9 @@ Route::get('/email/verify', function () {
     dd('email not verified');
 })->middleware('adminAuthentication')->name('verification.notice');
 
-Route::get('/forgot-password', function () {
-    return view('auth.forgot-password');
-})->name('password.request');
+
+//Password Reset Routes
+Route::post('/forgot-password', [PasswordResetController::class, 'index'])->name('password.request');
+Route::post('/forgot-password', [PasswordResetController::class, 'forgetPassword'])->name('password.email');
+Route::get('/reset-password/{token}',[PasswordResetController::class, 'resetPassword'])->name('password.reset');
+Route::post('/reset-password/{token}',[PasswordResetController::class, 'resetPassword'])->name('password.reset');
