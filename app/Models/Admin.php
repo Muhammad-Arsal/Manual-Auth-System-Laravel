@@ -24,7 +24,7 @@ class Admin extends Authenticatable implements MustVerifyEmail
 
     public function sendPasswordResetNotification($token)
     {
-        $url = 'https://laravelauth.test/reset-password?token=' . $token;
+        $url =  $token;
 
         $this->notify(new ResetPasswordNotification($url));
     }

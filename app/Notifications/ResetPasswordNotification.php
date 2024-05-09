@@ -10,13 +10,14 @@ use Illuminate\Notifications\Notification;
 class ResetPasswordNotification extends Notification
 {
     use Queueable;
-
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    protected $resetUrl;
+
+    public function __construct($resetUrl)
     {
-        //
+        $this->resetUrl = $resetUrl;
     }
 
     /**
@@ -36,7 +37,7 @@ class ResetPasswordNotification extends Notification
     {
         return (new MailMessage)
             ->line('Click the button given below to reset you password')
-            ->action('Password Reset', url('/'))
+            ->action('Password Reset', route('password.reset', $this->resetUrl))
             ->line('Thank you for using our application!');
     }
 

@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/', [HomeController::class, 'index']);
-Route::get('/login', [HomeController::class, 'loginPage']);
+Route::get('/login', [HomeController::class, 'loginPage'])->name('login.page');
 Route::get('/register', [AdminController::class, 'index']);
 Route::post('/registerForm', [AdminController::class, 'register'])->name('admin.register');
 Route::post('/loginForm', [AdminController::class, 'login'])->name('admin.login');
@@ -38,7 +38,7 @@ Route::get('/email/verify', function () {
 
 
 //Password Reset Routes
-Route::post('/forgot-password', [PasswordResetController::class, 'index'])->name('password.request');
+Route::get('/forgot-password', [PasswordResetController::class, 'index'])->name('password.request');
 Route::post('/forgot-password', [PasswordResetController::class, 'forgetPassword'])->name('password.email');
-Route::get('/reset-password/{token}',[PasswordResetController::class, 'resetPassword'])->name('password.reset');
-Route::post('/reset-password/{token}',[PasswordResetController::class, 'resetPassword'])->name('password.reset');
+Route::get('/reset-password/{token}',[PasswordResetController::class, 'resetPasswordIndex'])->name('password.reset');
+Route::post('/reset-password',[PasswordResetController::class, 'resetPassword'])->name('password.update');
